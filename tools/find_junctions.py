@@ -109,13 +109,14 @@ def findJunctions(filename, radius, threshold):
                         index = getIndex(start+sectionOffsets[i]+j, chr_name)
                         cov[index] += 1
 
-    # take derivative at each base
+    # smooth
     #wgt = float(1) / (2*radius+1)
     #for i in xrange(total_length-1):
     #    for j in xrange(-radius,radius+1):
     #        if i+j >= 0 and i+j < total_length:
     #            cov[i+j] += wgt*(cov[i+1] - cov[i])
 
+    # take derivative at each base
     for i in xrange(total_length-1):
         cov[i] = cov[i+1] - cov[i]
 

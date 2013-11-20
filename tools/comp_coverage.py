@@ -12,7 +12,7 @@ import pylab
 
 # Read the alignment data from a sam file
 # Update the coverage arrays
-def read_sam(filename, form, cov, wgt):
+def read_sam(filename, form, cov):
     print 'Reading ' + filename
 
     hits = 0
@@ -20,6 +20,7 @@ def read_sam(filename, form, cov, wgt):
         rows = []
         for line in tsv:
             row = line.strip().split('\t')
+            wgt = 1
             if (form == 'sam'):
                 chr_name = row[2]
                 if chr_name in chromosomes:
@@ -39,8 +40,10 @@ def read_sam(filename, form, cov, wgt):
                         currOffset += int(''.join(pattern[:index]))
                         pattern = pattern[index+1:]
                         match = re.search("\D", pattern)
-                #else:
-                #    print 'Unknown chromosome ' + row[2]
+
+                    for i in row[11:len(row)]:
+                        if i[0:5] == 'NH:i:':
+                            wgt = 1 / int(i[5:len(i)])
             else:
                 chr_name = row[0]
                 if chr_name == 'dmel_mitochondrion_genome':
@@ -118,7 +121,7 @@ if (format1 != 'sam' and format1 != 'bed') or (format2 != 'sam' and format2 != '
 
 
 print 'Reading actual alignments'
-coverage_actual, hits_actual = read_sam(actual, format1, coverage_actual, 1)
+coverage_actual, hits_actual = read_sam(actual, format1, coverage_actual)
 print str(hits_actual) + ' actual hits'
 
 print 'Calculating length'
@@ -126,7 +129,7 @@ len_actual = np.linalg.norm(coverage_actual)
 print 'Actual Length: ' + str(len_actual)
 
 print 'Reading predicted alignments'
-coverage_predicted, hits_predicted = read_sam(predicted, format2, coverage_predicted, 1)
+coverage_predicted, hits_predicted = read_sam(predicted, format2, coverage_predicted)
 print str(hits_predicted) + ' predicted hits'
 
 print 'Calculating error'

@@ -25,7 +25,7 @@ def read_data(filename, form, junctions, wgt):
             if (form == 'sam'):
                 chr_name = row[2]
                 if chr_name in chromosomes:
-                    start = int(row[3])
+                    start = getIndex(int(row[3]), chr_name)
 
                     pattern = row[5]
                     junctionOffsets = []
@@ -53,7 +53,7 @@ def read_data(filename, form, junctions, wgt):
                 if chr_name == 'dmel_mitochondrion_genome':
                     chr_name = 'M'
                 if chr_name in chromosomes:
-                    start = int(row[1])
+                    start = getIndex(int(row[1]), chr_name)
                     junctionLens = [int(s) for s in string.split(row[10], ',')]
                     junctionOffsets = [int(s) for s in string.split(row[11], ',')]
 
@@ -71,11 +71,27 @@ def read_data(filename, form, junctions, wgt):
                 chr_name = row[0]
                 if chr_name == 'dmel_mitochondrion_genome':
                     chr_name = 'M'
- 
-                if row[2] == 'exon':
-                    count += 1
-                    junctions[int(row[3])-1] = 1
-                    junctions[int(row[4])] = 1
+
+                if chr_name in chromosomes:
+                    start = getIndex(int(row[3]) - 1, chr_name)
+                    end = getIndex(int(row[4]), chr_name)
+
+                    # don't count endpoints of transcript
+                    if row[2] == 'transcript':
+                        junctions[start] = 0
+                        junctions[end] = 0
+
+                    if row[2] == 'exon':
+                        count += 1
+                        if start in junctions:
+                            junctions.pop(start, None)
+                        else:
+                            junctions[start] = 1
+  
+                        if end in junctions:
+                            junctions.pop(end, None)
+                        else:
+                            junctions[end] = 1
 
     return junctions
 
@@ -97,6 +113,7 @@ chr_lengths = [['2L', 23011544],
                ['U', 10049037],
                ['Uextra', 29004656]]
 
+
 #chromosomes = ['2L']
 #chr_lengths = [['2L', 23011544]]
 
@@ -109,6 +126,13 @@ def getIndex(position, chromosome):
         else:
             index += b
 
+def getChromosomePos(index):
+    for [a,b] in chr_lengths:
+        if index < b:
+            return index, a
+        else:
+            index -= b
+    print 'Error! Index too high!'
 
 # Initialize empty coverage arrays
 j_actual = dict()
@@ -144,19 +168,32 @@ tn = 0
 jarray_actual = np.array([])
 jarray_predicted = np.array([])
 
+f = open('junctions.cn', 'w')
+f.write('SNP\tChromosome\tPhysicalPosition\tJunctions\n')
+
 for i in j_predicted:
+    pos, chrom = getChromosomePos(i)
+
     jarray_predicted = np.append(jarray_predicted, j_predicted[i])
     if i in j_actual:
         tp += 1
         jarray_actual = np.append(jarray_actual, j_actual[i])
+        f.write('SNP\t' + chrom + '\t' + str(pos) + '\t0\n')
     else:
         fp += 1
         jarray_actual = np.append(jarray_actual, 0)
+        f.write('SNP\t' + chrom + '\t' + str(pos) + '\t1\n')
 for i in j_actual:
     if not i in j_predicted:
+        pos, chrom = getChromosomePos(i)
         fn += 1
         jarray_actual = np.append(jarray_actual, j_actual[i])
         jarray_predicted = np.append(jarray_predicted, 0)
+        
+        pos, chrom = getChromosomePos(i)
+        f.write('SNP\t' + chrom + '\t' + str(pos) + '\t-1\n')
+
+f.close()        
 
 #for (name, length) in chr_lengths:
 #    tn += length
