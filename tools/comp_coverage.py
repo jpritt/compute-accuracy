@@ -153,6 +153,6 @@ print 'Correlation:\t' + str(correlation)
 print 'Plotting'
 xs = coverage_actual[0:len(coverage_actual):10]
 ys = coverage_predicted[0:len(coverage_predicted):10]
-matplotlib.pyplot.scatter(xs, ys, alpha=0.5)
+matplotlib.pyplot.scatter(xs+ys, xs-ys, alpha=0.5)
 matplotlib.pyplot.show()
 print 'Done!'
