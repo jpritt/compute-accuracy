@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Session genome="dm3" hasGeneTrack="false" hasSequenceTrack="true" locus="chr2R:14853228-14907982" version="7">
+    <Resources>
+        <Resource path="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/junctions_tophat.sorted.cn"/>
+        <Resource path="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/accepted_hits.sam"/>
+        <Resource path="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/cufflinks.gtf"/>
+        <Resource path="/users/mjpritt/Desktop/compute-accuracy/tools/drosophila.gtf"/>
+        <Resource path="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/junctions_cufflinks.sorted.cn"/>
+        <Resource path="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/simulation.narrowpeak"/>
+    </Resources>
+    <Panel height="278" name="DataPanel" width="1129">
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;130.0;255,255,255;0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="45" id="/users/mjpritt/Desktop/compute-accuracy/tools/drosophila.gtf" name="drosophila.gtf" renderer="GENE_TRACK" sortable="false" visible="true" windowFunction="count">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="130.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="45" id="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/simulation.narrowpeak" name="simulation.narrowpeak" renderer="BASIC_FEATURE" sortable="false" visible="true" windowFunction="count"/>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="45" id="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/cufflinks.gtf" name="cufflinks.gtf" renderer="GENE_TRACK" sortable="false" visible="true" windowFunction="count"/>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/junctions_tophat.sorted.cn_Junctions" name="Tophat Junctions" normalize="false" renderer="HEATMAP" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="1.0" minimum="-1.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/junctions_cufflinks.sorted.cn_Junctions" name="Cufflinks Junctions" normalize="false" renderer="HEATMAP" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="1.0" minimum="-1.0" type="LINEAR"/>
+        </Track>
+    </Panel>
+    <Panel height="241" name="Panel1387219834544" width="1129">
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" colorScale="ContinuousColorScale;0.0;10.0;255,255,255;175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/accepted_hits.sam_coverage" name="accepted_hits.sam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="false" flipAxis="false" maximum="10.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="EXPANDED" featureVisibilityWindow="-1" fontSize="10" id="/users/mjpritt/Desktop/compute-accuracy/tools/sim2/accepted_hits.sam" name="accepted_hits.sam" showSpliceJunctions="false" sortable="true" visible="true">
+            <RenderOptions colorByTag="" colorOption="UNEXPECTED_PAIR" flagUnmappedPairs="false" groupByTag="" maxInsertSize="1000" minInsertSize="50" shadeBasesOption="QUALITY" shadeCenters="true" showAllBases="false" sortByTag=""/>
+        </Track>
+    </Panel>
+    <Panel height="29" name="FeaturePanel" width="1129">
+        <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="Reference sequence" name="Reference sequence" sortable="false" visible="true"/>
+    </Panel>
+    <PanelLayout dividerFractions="0.5,0.9392857142857143"/>
+    <HiddenAttributes>
+        <Attribute name="NAME"/>
+        <Attribute name="DATA FILE"/>
+        <Attribute name="DATA TYPE"/>
+    </HiddenAttributes>
+</Session>
