@@ -22,8 +22,6 @@ def read_data(filename, form, junctions, wgt):
         rows = []
         for line in tsv:
             row = line.strip().split('\t')
-
-            # read SAM file
             if (form == 'sam'):
                 chr_name = row[2]
                 if chr_name in chromosomes:
@@ -50,8 +48,6 @@ def read_data(filename, form, junctions, wgt):
                         junctions[i] = 1
                 #else:
                 #    print 'Unknown chromosome ' + row[2]
-
-            # read BED file
             elif (form == 'bed'):
                 chr_name = row[0]
                 if chr_name == 'dmel_mitochondrion_genome':
@@ -71,7 +67,6 @@ def read_data(filename, form, junctions, wgt):
                 #else:
                 #    print 'Unknown chromosome ' + chr_name
 
-            # read GTF file
             else:
                 chr_name = row[0]
                 if chr_name == 'dmel_mitochondrion_genome':
@@ -97,15 +92,11 @@ def read_data(filename, form, junctions, wgt):
                             junctions.pop(end, None)
                         else:
                             junctions[end] = 1
-                    #count += 1
-                    #junctions[start] = 1
-                    #junctions[end] = 1
 
     return junctions
 
 
 chromosomes = ['2L', '2R', '3L', '3R', '4', 'M', 'X', '2LHet', '2RHet', '3LHet', '3RHet', 'XHet', 'YHet', 'U', 'Uextra']
-chromosomes = ['chr' + el for el in chromosomes]
 chr_lengths = [['2L', 23011544],
                ['2R', 21146708],
                ['3L', 24543557],
@@ -121,7 +112,6 @@ chr_lengths = [['2L', 23011544],
                ['YHet', 347038],
                ['U', 10049037],
                ['Uextra', 29004656]]
-chr_lengths = [['chr'+el[0], el[1]] for el in chr_lengths]
 
 
 #chromosomes = ['2L']
@@ -148,16 +138,12 @@ def getChromosomePos(index):
 j_actual = dict()
 j_predicted = dict()
 
-if len(sys.argv) != 3 and len(sys.argv) != 4:
-    print "Usage: ./comp_coverage.py actual predicted error"
+if len(sys.argv) != 3:
+    print "Usage: ./comp_coverage.py actual predicted"
     print "  .sam .bed and .gtf files are supported"
 
 actual = sys.argv[1]
 predicted = sys.argv[2]
-
-error = 0
-if len(sys.argv) == 4:
-    error = int(sys.argv[3])
 
 format1 = actual[-3:len(actual)]
 format2 = predicted[-3:len(predicted)]
@@ -189,30 +175,16 @@ for i in j_predicted:
     pos, chrom = getChromosomePos(i)
 
     jarray_predicted = np.append(jarray_predicted, j_predicted[i])
-
-    found = False
-
-    for n in xrange(-error,error+1):
-        if (i+n) in j_actual:
-            found = True
-            tp += 1
-            jarray_actual = np.append(jarray_actual, j_actual[i+n])
-            f.write('SNP\t' + chrom + '\t' + str(pos) + '\t0\n')
-            break
-
-    if not found:
+    if i in j_actual:
+        tp += 1
+        jarray_actual = np.append(jarray_actual, j_actual[i])
+        f.write('SNP\t' + chrom + '\t' + str(pos) + '\t0\n')
+    else:
         fp += 1
         jarray_actual = np.append(jarray_actual, 0)
         f.write('SNP\t' + chrom + '\t' + str(pos) + '\t1\n')
 for i in j_actual:
-    found = False
-
-    for n in xrange(-error, error+1):
-        if (i+n) in j_predicted:
-            found = True
-            break
-
-    if not found:
+    if not i in j_predicted:
         pos, chrom = getChromosomePos(i)
         fn += 1
         jarray_actual = np.append(jarray_actual, j_actual[i])
